@@ -10,8 +10,8 @@ $.ajaxPrefilter(function(options) {
     options.headers = {
         Authorization:localStorage.getItem('token') || ''
     }
-
-    // 优化控制用户的访问权限
+    // 全局统一挂载complete回调函数
+    // 优化控制用户的访问权限 在调用有权限接口的时候，指定`complete`回调函数：
     options.complete = function(res) {
         // console.log(res);
             if (res.responseJSON.status !== 0 && res.responseJSON.message !== '获取用户基本信息成功！') {
@@ -20,4 +20,5 @@ $.ajaxPrefilter(function(options) {
                 //2.强制返回登录页面
                 location.href = '/login.html'
     }
+}
 })

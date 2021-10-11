@@ -29,12 +29,13 @@ function getUserInfo() {
         //     Authorization:localStorage.getItem('token') || ''
         // },
         success: function (res) {
-            console.log(res);
+            // console.log(res);
             if (res.status !== 0) {
                 return layui.layer.msg('获取用户基本信息失败')
             }
             // 调用renderAvatar 渲染用户头像
-            renderAvatar(res.data)
+            renderAvatar(res.data);
+            // console.log(res);
         },
         // 控制用户的访问权限，无论访问成功还是失败，都会执行complete回调函数
         // complete: function (res) {
@@ -49,23 +50,48 @@ function getUserInfo() {
 
     })
 }
-//渲染用户头像
-function renderAvatar(users) {
-    // 1.获取用户名称，判断是昵称还是用户名
-    var name = users.username || users.nickname;
-    // 2.渲染用户名到欢迎文本框内
-    $('#welcome').html('欢迎&nbsp&nbsp' + name);
-    //3.渲染用户头像
-    if (users.user_pic !== null) {
-        //3.1渲染图片头像 给图片的src属性赋一个值
-        $('.layui-nav-img').attr('src', users.user_pic).show();
-        $('text-avatar').hide();
+// //渲染用户头像
+// function renderAvatar(user) {
+//     // 1.获取用户名称，判断是昵称还是用户名
+//     // 如果第一个表达式为真，则返回第一个表达式的值，如果为假则返回第二个表达式
+//     // 如果又昵称则返回昵称，如果没有昵称则选择用户名
+//     var name = user.nickname || user.username;
+//     // 2.渲染用户名到欢迎文本框内
+//     $('#welcome').html('欢迎&nbsp&nbsp' + name);
+//     //3.渲染用户头像
+//     if (user.user_pic !== null) {
+//         //3.1渲染图片头像 给图片的src属性赋一个值
+//         $('.layui-nav-img').attr('src', user.user_pic).show();
+//         $('text-avatar').hide();
+//     } else {
+//         //3.2渲染文本头像
+//         $('.layui-nav-img').hide();
+//         var first = name[0].toUpperCase();
+//         $('.text-avatar').html(first).show();
+
+//     }
+
+
+// }
+// 渲染用户的头像
+function renderAvatar(user) {
+    // 1. 获取用户的名称
+    var name = user.nickname || user.username;
+    // 2. 设置欢迎的文本
+    $('#welcome').html('欢迎&nbsp;&nbsp;' + name);
+    // 3. 按需渲染用户的头像
+    if (user.user_pic !== null) {
+      // 3.1 渲染图片头像
+      $('.layui-nav-img')
+        .attr('src', user.user_pic)
+        .show();
+      $('.text-avatar').hide();
     } else {
-        //3.2渲染文本头像
-        var first = name[0].toUpperCase();
-        $('.text-avatar').html(first).show();
-        $('.layui-nav-img').hide();
+      // 3.2 渲染文本头像
+      $('.layui-nav-img').hide();
+      var first = name[0].toUpperCase();
+      $('.text-avatar')
+        .html(first)
+        .show();
     }
-
-
-}
+  }
